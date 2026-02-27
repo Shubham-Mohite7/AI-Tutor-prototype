@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "name": "aitutor-frontend",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://aitutor-backend.onrender.com"
+  }
+}
