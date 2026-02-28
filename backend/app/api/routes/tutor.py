@@ -18,12 +18,16 @@ from app.services import ai_service
 from app.services import true_false_service
 
 logger = logging.getLogger(__name__)
-router = APIRouter(tags=["tutor"])
 
+router = APIRouter(prefix="/api/v1/tutor", tags=["tutor"])
+
+
+# ── Health Check ───────────────────────────────────────────────────────────────
 
 @router.get("/health")
-async def health():
-    return {"status": "ok"}
+async def health_check():
+    """Health check endpoint for Render monitoring."""
+    return {"status": "healthy", "service": "aitutor-backend"}
 
 
 @router.options("/learn")
