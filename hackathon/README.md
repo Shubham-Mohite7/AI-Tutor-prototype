@@ -113,4 +113,3 @@ docker-compose -f deployment/docker-compose.prod.yml up -d
 
 ---
 
-**Built with passion for [Hackathon Name]**
