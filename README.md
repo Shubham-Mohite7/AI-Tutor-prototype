@@ -1,194 +1,28 @@
-# AITutor — Production-Ready Web App
+<div align="center">
 
-Tutor for Indian students. Enter any topic, get a clear explanation, then take a 10-question mock test grounded in that explanation.
+  <img src="https://img.shields.io/badge/Production%20Ready-Ready%20to%20Deploy-8B5CF6?style=for-the-badge&logo=rocket&logoColor=white" alt="Production Ready" />
 
-## Tech Stack
+  <h1 style="font-size: 3.8rem; margin: 16px 0 8px; background: linear-gradient(90deg, #A78BFA, #C4B5FD, #DDD6FE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">
+    🌊 AITutor 🌊
+  </h1>
+  
+  <h3 style="color: #64748B; font-weight: 500;">AI-Powered Tutor for Indian Students</h3>
+  
+  <p style="font-size: 1.35rem; max-width: 620px; margin: 20px auto;">
+    Enter <strong>any topic</strong> → Receive a crystal-clear explanation → Take a smart 10-question mock test grounded in what you just learned
+  </p>
 
-| Layer     | Technology                              |
-|-----------|-----------------------------------------|
-| Frontend  | Next.js 14 (App Router), TypeScript, Tailwind CSS |
-| Backend   | FastAPI, Python 3.12, Pydantic v2       |
-| API        | OpenRouter → GPT-OSS 120B (deep reasoning) |
-| Deploy    | Docker + docker-compose                 |
+  <img src="https://api.pikwy.com/web/69a2a331decb0d637029bd48.png" 
+       alt="AITutor Preview" 
+       width="920" 
+       style="border-radius: 24px; box-shadow: 0 30px 80px -20px rgba(167, 139, 246, 0.5); margin: 30px 0 40px;">
 
-## Project Structure
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=nextdotjs&logoColor=white" />
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+    <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+    <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
+  </p>
 
-```
-aitutor/
-├── src/
-│   ├── backend/
-│   │   ├── app/
-│   │   │   ├── core/config.py          # Settings (pydantic-settings)
-│   │   │   ├── models/schemas.py       # Request/response Pydantic models
-│   │   │   ├── services/api_service.py  # All API logic isolated here
-│   │   │   ├── api/routes/tutor.py     # FastAPI route handlers
-│   │   │   └── main.py                 # App factory + middleware
-│   │   ├── requirements.txt
-│   │   ├── Dockerfile
-│   │   └── .env.example
-│   └── frontend/
-│       ├── app/
-│       │   ├── components/
-│       │   │   ├── layout/             # Navbar, Hero
-│       │   │   ├── ui/                 # Card, Button (reusable)
-│       │   │   └── tutor/              # TutorApp, TopicInput, QuizView, etc.
-│       │   ├── hooks/useLearn.ts       # All client state + API calls
-│       │   ├── lib/api.ts              # Typed fetch wrapper
-│       │   ├── types/index.ts          # Shared TypeScript types
-│       │   ├── layout.tsx
-│       │   └── page.tsx
-│       ├── public/manifest.json
-│       ├── tailwind.config.ts
-│       ├── next.config.mjs
-│       └── Dockerfile
-├── deployment/                     # Deployment configurations
-├── docs/                          # Documentation
-├── vercel.json                    # Vercel configuration
-├── render.yaml                    # Render configuration
-└── DEPLOYMENT.md                  # Deployment guide
-```
-
-## Quick Start (Local Dev)
-
-### Option 1: Using Modular Structure (Recommended)
-```bash
-# Backend
-cd backend
-cp .env.example .env
-# Edit .env with your OPENROUTER_API_KEY
-python -m uvicorn app.main:app --reload --port 8000
-
-# Frontend (new terminal)
-cd frontend
-cp .env.example .env.local
-npm install
-npm run dev
-```
-
-### Option 2: Using Original Structure
-```bash
-# Backend
-cd src/backend
-source venv/bin/activate
-python -m uvicorn app.main:app --reload --port 8000
-
-# Frontend
-cd src/frontend
-npm install
-npm run dev
-```
-
-### 3. Open Browser
-Navigate to: http://localhost:3000 (or 3001/3002 if ports taken)
-
----
-
-## Production Deployment
-
-### 🚀 Quick Deploy (Modular Structure)
-```bash
-# Deploy both services
-cd backend && ./deploy.sh
-cd ../frontend && ./deploy.sh
-```
-
-### Option 1: Separate Modules (Recommended)
-- **Backend**: See [backend/README.md](backend/README.md) → Deploy to Render
-- **Frontend**: See [frontend/README.md](frontend/README.md) → Deploy to Vercel
-- **Guide**: See [QUICK_DEPLOY.md](QUICK_DEPLOY.md) for step-by-step
-
-### Option 2: Original Structure
-- See [DEPLOYMENT.md](DEPLOYMENT.md) for combined deployment
-
-### Option 3: Full Modular Setup
-- See [MODULAR_DEPLOYMENT.md](MODULAR_DEPLOYMENT.md) for complete guide
-
----
-
-## Docker (Production)
-
-```bash
-# Set your API key in src/backend/.env first
-docker-compose up --build
-```
-
-Frontend → http://localhost:3000  
-Backend API docs → http://localhost:8000/docs
-
-## API Endpoints
-
-| Method | Path                    | Description                          |
-|--------|-------------------------|--------------------------------------|
-| POST   | /api/v1/tutor/learn     | Generate explanation + quiz (30-60s) |
-| POST   | /api/v1/tutor/score     | Score quiz answers (instant)         |
-| GET    | /api/v1/tutor/health    | Health check                         |
-| GET    | /docs                   | Swagger UI                           |
-
-### POST /api/v1/tutor/learn
-```json
-{ "topic": "Photosynthesis", "language": "en" }
-```
-
-**Response:**
-```json
-{
-  "topic": "Photosynthesis",
-  "explanation": "Photosynthesis is the process by which...",
-  "quiz": [
-    {
-      "question": "According to the explanation...",
-      "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
-      "answer": 0,
-      "explanation": "...",
-      "difficulty": 1
-    }
-  ]
-}
-```
-
-## Environment Variables
-
-Create `.env.local` from `.env.example`:
-
-```bash
-# Required
-OPENROUTER_API_KEY=sk-or-v1-your-key-here
-NEXT_PUBLIC_API_URL=http://localhost:8000
-
-# Optional
-NODE_ENV=development
-```
-
-## Development
-
-### Code Quality
-- TypeScript strict mode
-- ESLint + Prettier
-- Pre-commit hooks
-- Docker support
-
-### Testing
-```bash
-# Backend tests
-cd src/backend && python -m pytest
-
-# Frontend tests
-cd src/frontend && npm test
-```
-
-## Production Features
-
-- Production-ready code
-- Environment-based configuration
-- Health checks
-- Error handling
-- CORS support
-- Docker deployment
-- Vercel + Render deployment guides
-- Emoji-free UI (professional)
-- Responsive design
-- Three quiz modes (Standard, Adaptive, Swipe Cards)
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
+</div>
